@@ -10,6 +10,7 @@ using namespace std;
 
 int main()
 {
+    int puntaje = -1;
     int fila(10),columna(10);
     int tecla=0;
     int largo = 0;
@@ -46,40 +47,6 @@ int main()
     {
         Control_comida = true;
         Control_poder = true;
-        cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        //-----------------------------------
-        for (int row=0; row < fila; ++row) //imprimir tablero
-        {
-            for (int col=0; col<columna; ++col)
-            {
-                if (world_mapa[row][col] == 0) // 0 = vacío
-                {
-                    cout << " ";
-                }
-                else if (world_mapa[row][col] == 1) // 1 = muro
-                {
-                    cout << "=";
-                }
-                else if (world_mapa[row][col] == 2) // 2 = comida
-                {
-                    cout << "@";
-                }
-                else if (world_mapa[row][col] == 3) //3 = poder
-                {
-                    cout << "P";
-                }
-                else if (world_mapa[row][col] >= 5) //5 = cabeza  || 4 = falsa cabeza 
-                {
-                    cout << "#";
-                }
-                else
-                {
-                    cout << "GANASTE";
-                    game = false;
-                }
-            }
-            cout << endl;
-        }
         //----------------------------------- //cambiar posición 
         for (int row=0; row < fila; ++row)
         {
@@ -133,7 +100,11 @@ int main()
                             {
                                 if(tecla!=0)
                                 {
+                                    cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+                                    cout << "----Perdiste-----" << "\n";
+                                    cout << "\n\n\n\n\n\n\n\n";
                                     game = false;
+                                    return 0;
                                 }
                                 Control_sneak = true;  //para no morir con el muro o cuerpo// 
 
@@ -169,10 +140,49 @@ int main()
                 }
             }
         }
+        
+        //-----------------------------------
+        cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+        //-----------------------------------       
+        cout << "Puntaje: " << puntaje << "\n";
+
+        for (int row=0; row < fila; ++row) //imprimir tablero
+        {
+            for (int col=0; col<columna; ++col)
+            {
+                if (world_mapa[row][col] == 0) // 0 = vacío
+                {
+                    cout << " ";
+                }
+                else if (world_mapa[row][col] == 1) // 1 = muro
+                {
+                    cout << "=";
+                }
+                else if (world_mapa[row][col] == 2) // 2 = comida
+                {
+                    cout << "@";
+                }
+                else if (world_mapa[row][col] == 3) //3 = poder
+                {
+                    cout << "P";
+                }
+                else if (world_mapa[row][col] >= 5) //5 = cabeza  || 4 = falsa cabeza 
+                {
+                    cout << "#";
+                }
+                else
+                {
+                    cout << "GANASTE";
+                    game = false;
+                }
+            }
+            cout << endl;
+        }
+        
         //-----------------------------------
         if (Control_comida == true) //generar cuerpo y manzana random 
         {   
-
+            puntaje = puntaje + 1;
             if (comida_x != 0) //al inicio el valor de comida es 0 porque el cuerpo aún no tocá nada
             {
                 Control_largo += 1; //control_largo = 4, toca una comida este genera un cuerpo 5
