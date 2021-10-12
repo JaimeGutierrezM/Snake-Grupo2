@@ -215,12 +215,13 @@ int main()
                 world_mapa[sneak_row[largo-1]][sneak_col[largo-1]] = 0;  //quita la última ubicación del fianl del cuerpo
                 Control_largo -= 1; 
                 largo -= 1; 
+                puntaje -= 1;
             }
 
             Control_tiempo += 1;
             if(poder_x!=0)
             {
-            velocidad_juego = 500; 
+                velocidad_juego = 500; 
             }
             if(Control_tiempo >= 15)  //reestablece el poder
             {
