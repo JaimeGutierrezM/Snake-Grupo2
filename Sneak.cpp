@@ -10,6 +10,7 @@
 //Arequipa - Perú
 //
 //GITHUB: https://github.com/JaimeGutierrezM/Snake-Grupo2
+//Código ejecutado en VisualStudio
 
 #include <iostream>
 #include <conio.h>   // getch kbhit -> coordenadas de la consola
