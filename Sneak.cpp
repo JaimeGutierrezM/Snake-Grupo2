@@ -1,5 +1,18 @@
+//Universidad Católica San Pablo
+//curso: Ciencias de la Computación CCOMP2 -1
+//Grupo:
+//    - Alexander Rafael Murillo Castillo
+//    - Jaime Mateo Gutierrez Muñoz
+//    - Emmanuel Del Piero Martinez Salcedo
+//Profesor:
+//    - DSc. Manuel Eduardo Loaiza Fernández 
+//Semestre 2021 - II
+//Arequipa - Perú
+//
+//GITHUB: https://github.com/JaimeGutierrezM/Snake-Grupo2
+
 #include <iostream>
-#include <conio.h>   //gotoxy(x,y) getch kbhit -> coordenadas de la consola
+#include <conio.h>   // getch kbhit -> coordenadas de la consola
 #include <cstdlib>  //random
 #include <ctime>
 using namespace std;
@@ -26,9 +39,9 @@ int main()
     bool game=true,Control_comida=true,Control_poder=true,Control_vacios = true;
     srand(time(0));
     int comida_x(0),comida_y(0),poder_x(0),poder_y(0);
-
     int world_mapa[fila][columna];
 
+    //----------------------------------- //inicialización de variables
     for (int row=0; row < fila; ++row) // inicialización del tablero según el tamaño de fiila y columna
     {
         for (int col=0; col<columna; ++col)
@@ -55,19 +68,20 @@ int main()
         sneak_col[i] = 0;
     }
     sneak[largo] = Control_largo; //primero inicializar la cabeza sneak[0] = 5;
+    //-----------------------------------
 
     while(game) 
     {
         Control_comida = true; // true = ya hay una comida en el mapa y se buscará para ponerlo en false
         Control_poder = true; // ya hay un poder en el mapa y se buscará si no hay para ponerlo false
         Control_vacios = true; // si es falso quiere, decir que, no hay un vacio donde poner frutas se ganara la partida
-        vacios =0; // si hay 1 vacios se gana 
+        vacios =0; // si hay 1 vacio se gana 
         //----------------------------------- //cambiar la posición de la serpiente a su nueva ubicación 
         for (int row=0; row < fila; ++row)
         {
             for (int col=0; col<columna; ++col)
             {
-                if (world_mapa[row][col] == 5) //4 = cabeza  || 3 = falsa cabeza 
+                if (world_mapa[row][col] == 5) //5 = cabeza  || 4 = falsa cabeza 
                 {
                     //-----------------------------------  // almacena los nuevos valores
                     for(int i =0; i <= largo; i++) //buscar el largo de la serpiente tanto la cabeza como el cuerpo para almacenar sus nuevos valores
@@ -76,7 +90,7 @@ int main()
                         {
                             for (int col1=0; col1<columna; ++col1)
                             {   
-                                if (world_mapa[row1][col1] == sneak[i])  //almacenar las posiciones del cuerpo de la serpiente
+                                if (world_mapa[row1][col1] == sneak[i])  //almacenar las posiciones de cada parte del cuerpo de la serpiente
                                 {
                                     sneak_row[i] = row1;
                                     sneak_col[i] = col1;
@@ -91,7 +105,7 @@ int main()
                         {   
                             if (row - 1 > 0 && world_mapa[row-1][col]<5 && tecla == 72) //up
                             {
-                                world_mapa[row-1][col] = 4; // 3 es la cabeza_falsa para que los for's principales no la vuelvan a buscar
+                                world_mapa[row-1][col] = 4; // 4 es la cabeza_falsa para que los for's principales no la vuelvan a buscar
                                 world_mapa[row][col] = 0;
                                 
                             }
@@ -139,9 +153,9 @@ int main()
                                 }
                             } 
                         }
-                        else //mueve la posición del cuerpo cambiando el world_mapa
+                        else //mueve la posición del cuerpo cambiando el world_mapa [la nueva posición de una parte del cuerpo es el cuerpo después a este]
                         {
-                            world_mapa[sneak_row[i-1]][sneak_col[i-1]] = sneak[i];
+                            world_mapa[sneak_row[i-1]][sneak_col[i-1]] = sneak[i];  
                             world_mapa[sneak_row[i]][sneak_col[i]] = 0;
                         }
 
@@ -230,7 +244,7 @@ int main()
 
                 for(int i =0; i < largo; i++) //cambia los valores del word_mapa para restablecer el CUERPO aumentado
                 {   
-                    world_mapa[sneak_row[i]][sneak_col[i]] = sneak[i+1];
+                    world_mapa[sneak_row[i]][sneak_col[i]] = sneak[i+1]; 
                 }
             }
             
