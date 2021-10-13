@@ -7,9 +7,17 @@ using namespace std;
 
 int main()
 {
+    int vacios =0;
     int puntaje = -1;
     int vida = 3;
     int fila(12),columna(12);
+
+    cout << "\nIngrese el número de filas: ";
+    cin >> fila; 
+    cout << "\nIngrese el número de columnas: ";
+    cin >> columna;
+
+    int inicio_x = fila/2, inicio_y = columna/2;
     int tecla=0;
     int largo = 0;
     int velocidad_juego=800;
@@ -29,7 +37,7 @@ int main()
             {
                 world_mapa[row][col] = 1; // 1 = muro
             }
-            else if(row == 7 && col == 4)
+            else if(row == inicio_x && col == inicio_y)
             {
                 world_mapa[row][col] = 5; // 5 = cabeza
             }
@@ -53,6 +61,7 @@ int main()
         Control_comida = true; // true = ya hay una comida en el mapa y se buscará para ponerlo en false
         Control_poder = true; // ya hay un poder en el mapa y se buscará si no hay para ponerlo false
         Control_vacios = true; // si es falso quiere, decir que, no hay un vacio donde poner frutas se ganara la partida
+        vacios =0; // si hay 1 vacios se gana 
         //----------------------------------- //cambiar la posición de la serpiente a su nueva ubicación 
         for (int row=0; row < fila; ++row)
         {
@@ -126,7 +135,7 @@ int main()
                                             }
                                         }
                                     }
-                                    world_mapa[6][4] = 5; // reubicar la cabeza
+                                    world_mapa[inicio_x][inicio_y] = 5; // reubicar la cabeza
                                 }
                             } 
                         }
@@ -174,7 +183,7 @@ int main()
                 if (world_mapa[row][col] == 0) // 0 = vacío
                 {
                     cout << " ";
-                    Control_vacios = false; //determinar si no hay vacios para ganar
+                    vacios++;
                 }
                 else if (world_mapa[row][col] == 1) // 1 = muro
                 {
@@ -195,7 +204,11 @@ int main()
             }
             cout << endl;
         }
-        if (Control_vacios == true) //ganar la partida //si en el tablero no hay ceros ganas
+        if (vacios <= 1) // si hay un cero se gana
+        {
+            Control_vacios = false; //determinar si no hay vacios para ganar
+        }
+        if (Control_vacios == false) //ganar la partida //si en el tablero hay un ceros ganas
             {
                 cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
                 cout << "----Ganaste-----" << "\n";
@@ -252,7 +265,7 @@ int main()
             {
                 Control_tiempo = 0;
                 velocidad_juego = 800;             
-                while(true) //poder random
+                while(true  && vacios > 3) //poder random si los vacios son mayores a 3
                 {
                     poder_x = (rand()%(fila-2))+1;
                     poder_y = (rand()%(columna-2))+1;
