@@ -101,11 +101,11 @@ int main()
                     //----------------------------------- //cambia los valores del world_mapa
                     for(int i =0; i <= largo; i++)   //cambia/mueve la posición de toda la serpiente cabeza/cuerpo
                     {
-                        if (i==0)  // 0 = porque la condicional que encierra este if es 4 o sea la cabeza y snake[0] es el número de la cabeza, entonces las condiciones es para que se mueva 
+                        if (i==0)  // 0 = porque la condicional que encierra este if es 5 o sea la cabeza y snake[0] es el número de la cabeza, entonces las condiciones es para que este se mueva 
                         {   
                             if (row - 1 > 0 && world_mapa[row-1][col]<5 && tecla == 72) //up
                             {
-                                world_mapa[row-1][col] = 4; // 4 es la cabeza_falsa para que los for's principales no la vuelvan a buscar
+                                world_mapa[row-1][col] = 4; //up 4 es la cabeza_falsa para que los for's principales no la vuelvan a buscar
                                 world_mapa[row][col] = 0;
                                 
                             }
@@ -173,11 +173,11 @@ int main()
                 {
                     world_mapa[row][col] = 5;
                 } 
-                else if (world_mapa[row][col] == 2) // ver si hay manzanas se crea un falso para no generar una nueva comida
+                else if (world_mapa[row][col] == 2) // ver si hay una manzana, se crea un falso para no generar una nueva comida
                 {
                     Control_comida = false;
                 }
-                else if (world_mapa[row][col] == 3) // ver si hay poder se crea un falso para no generar un poder
+                else if (world_mapa[row][col] == 3) // ver si hay un poder, se crea un falso para no generar un poder
                 {
                     Control_poder = false;
                 }
@@ -222,7 +222,7 @@ int main()
         {
             Control_vacios = false; //determinar si no hay vacios para ganar
         }
-        if (Control_vacios == false) //ganar la partida //si en el tablero hay un ceros ganas
+        if (Control_vacios == false) //ganar la partida //si en el tablero hay un cero 
             {
                 cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
                 cout << "----Ganaste-----" << "\n";
@@ -237,7 +237,7 @@ int main()
             puntaje = puntaje + 1;
             if (comida_x != 0) //al inicio el valor de comida es 0 porque el cuerpo aún no tocá nada
             {
-                Control_largo += 1; //control_largo = 4, toca una comida este genera un cuerpo 5
+                Control_largo += 1; //control_largo = 5, toca una comida este genera un cuerpo 6 y así sucesivamente
                 largo += 1; // al inicio el largo es 0 y  va aumentado por comida tocada
                 sneak[largo] = Control_largo; //almacenar el largo del cuerpo en esta lista
                 world_mapa[comida_x][comida_y] = sneak[0]; //genera la nueva CABEZA al tocar la comida
@@ -293,7 +293,7 @@ int main()
         }
         //-----------------------------------
 
-        for (double time = 0; time < velocidad_juego;time+=0.05)  //teimpo para imprimir y capturar la tecla
+        for (double time = 0; time < velocidad_juego;time+=0.05)  //tiempo para imprimir y capturar la tecla
         {
             if (_kbhit()) 
             {                
