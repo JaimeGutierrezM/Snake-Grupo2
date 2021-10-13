@@ -3,51 +3,57 @@
 #include <cstdlib>  //random
 #include <ctime>
 using namespace std;
-#define tecla_UP 72
-#define tecla_DOWN 80
-#define tecla_RIGHT 77
-#define tecla_LEFT 75
+// tecla_UP 72 tecla_DOWN 80  tecla_RIGHT 77 tecla_LEFT 75
 
 int main()
 {
     int puntaje = -1;
-    int fila(10),columna(10);
+    int vida = 3;
+    int fila(12),columna(12);
     int tecla=0;
     int largo = 0;
     int velocidad_juego=800;
     int Control_largo = 5, Control_tiempo=0;
-    int almacen_cuerpo[2] = {0,0}, cambio_cuerpo[2]={0,0};  // [row,col] alamacen_cuerpo toma row,col antes de cambiar de posición y cambio_cuerpo hace que la parte del cuerpo valla en esa casilla 
     int casillas = (fila-2)*(columna-2), sneak[casillas], sneak_row[casillas], sneak_col[casillas];
-    bool game=true,Control_comida=true,Control_poder=true,Control_sneak=true;
+    bool game=true,Control_comida=true,Control_poder=true,Control_vacios = true;
     srand(time(0));
     int comida_x(0),comida_y(0),poder_x(0),poder_y(0);
 
-    int world_mapa[fila][columna] ={ 
-    {1,1,1,1,1,1,1,1,1,1},
-    {1,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,5,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,1},
-    {1,1,1,1,1,1,1,1,1,1},
-    };
-    
-    for(int i=0; i< casillas; i++ )
+    int world_mapa[fila][columna];
+
+    for (int row=0; row < fila; ++row) // inicialización del tablero según el tamaño de fiila y columna
+    {
+        for (int col=0; col<columna; ++col)
+        {
+            if(row == 0 || row == fila-1 || col == 0 || col == columna-1)
+            {
+                world_mapa[row][col] = 1; // 1 = muro
+            }
+            else if(row == 7 && col == 4)
+            {
+                world_mapa[row][col] = 5; // 5 = cabeza
+            }
+            else
+            {
+                world_mapa[row][col] = 0; // 0 = vacios 
+            }
+        }
+    }
+
+    for(int i=0; i< casillas; i++ ) //inicialización de las otras listas 
     {
         sneak[i] = 0;
         sneak_row[i] = 0;
         sneak_col[i] = 0;
     }
-    sneak[largo] = Control_largo;
+    sneak[largo] = Control_largo; //primero inicializar la cabeza sneak[0] = 5;
 
     while(game) 
     {
-        Control_comida = true;
-        Control_poder = true;
-        //----------------------------------- //cambiar posición 
+        Control_comida = true; // true = ya hay una comida en el mapa y se buscará para ponerlo en false
+        Control_poder = true; // ya hay un poder en el mapa y se buscará si no hay para ponerlo false
+        Control_vacios = true; // si es falso quiere, decir que, no hay un vacio donde poner frutas se ganara la partida
+        //----------------------------------- //cambiar la posición de la serpiente a su nueva ubicación 
         for (int row=0; row < fila; ++row)
         {
             for (int col=0; col<columna; ++col)
@@ -74,19 +80,18 @@ int main()
                     {
                         if (i==0)  // 0 = porque la condicional que encierra este if es 4 o sea la cabeza y snake[0] es el número de la cabeza, entonces las condiciones es para que se mueva 
                         {   
-                            Control_sneak=true;
                             if (row - 1 > 0 && world_mapa[row-1][col]<5 && tecla == 72) //up
                             {
                                 world_mapa[row-1][col] = 4; // 3 es la cabeza_falsa para que los for's principales no la vuelvan a buscar
                                 world_mapa[row][col] = 0;
                                 
                             }
-                            else if (row + 1 < 9 && world_mapa[row+1][col]<5 && tecla == 80) //down
+                            else if (row + 1 < fila-1 && world_mapa[row+1][col]<5 && tecla == 80) //down
                             {
                                 world_mapa[row+1][col] = 4;
                                 world_mapa[row][col] = 0;
                             }
-                            else if (col + 1 < 9 && world_mapa[row][col+1]<5 && tecla == 77) //right
+                            else if (col + 1 < columna-1 && world_mapa[row][col+1]<5 && tecla == 77) //right
                             {
                                 world_mapa[row][col+1] = 4;
                                 world_mapa[row][col] = 0;
@@ -96,9 +101,9 @@ int main()
                                 world_mapa[row][col-1] = 4;
                                 world_mapa[row][col] = 0;
                             }
-                            else
+                            else if(tecla!=0)
                             {
-                                if(tecla!=0)
+                                if(vida == 1 ) //cerrar el juego
                                 {
                                     cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
                                     cout << "----Perdiste-----" << "\n";
@@ -106,11 +111,26 @@ int main()
                                     game = false;
                                     return 0;
                                 }
-                                Control_sneak = true;  //para no morir con el muro o cuerpo// 
-
+                                else // reiniciar la serpiente por perder una vida pero no reinicia el puntaje
+                                {
+                                    vida -= 1;
+                                    Control_largo = 5; 
+                                    largo = 0;
+                                    for (int row1=0; row1 < fila; ++row1) //buscar todos los valores del cuerpo de la serpiente y ponerlo en cero
+                                    {
+                                        for (int col1=0; col1< columna; ++col1)
+                                        {   
+                                            if ( world_mapa[row1][col1] >= 5)
+                                            {
+                                                world_mapa[row1][col1] = 0;
+                                            }
+                                        }
+                                    }
+                                    world_mapa[6][4] = 5; // reubicar la cabeza
+                                }
                             } 
                         }
-                        else if (Control_sneak==true) //mueve la posición del cuerpo cambiando el world_mapa
+                        else //mueve la posición del cuerpo cambiando el world_mapa
                         {
                             world_mapa[sneak_row[i-1]][sneak_col[i-1]] = sneak[i];
                             world_mapa[sneak_row[i]][sneak_col[i]] = 0;
@@ -138,13 +158,14 @@ int main()
                 {
                     Control_poder = false;
                 }
+
             }
         }
         
-        //-----------------------------------
+        //-----------------------------------// poner en blanco la pantalla
         cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
         //-----------------------------------       
-        cout << "Puntaje: " << puntaje << "\n";
+        cout << "Puntaje: " << puntaje <<  "   " <<"Vida: " << vida  << "\n";
 
         for (int row=0; row < fila; ++row) //imprimir tablero
         {
@@ -153,6 +174,7 @@ int main()
                 if (world_mapa[row][col] == 0) // 0 = vacío
                 {
                     cout << " ";
+                    Control_vacios = false; //determinar si no hay vacios para ganar
                 }
                 else if (world_mapa[row][col] == 1) // 1 = muro
                 {
@@ -170,14 +192,17 @@ int main()
                 {
                     cout << "#";
                 }
-                else
-                {
-                    cout << "GANASTE";
-                    game = false;
-                }
             }
             cout << endl;
         }
+        if (Control_vacios == true) //ganar la partida //si en el tablero no hay ceros ganas
+            {
+                cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+                cout << "----Ganaste-----" << "\n";
+                cout << "\n\n\n\n\n\n\n\n"; 
+                game = false;
+                return 0;
+            }
         
         //-----------------------------------
         if (Control_comida == true) //generar cuerpo y manzana random 
